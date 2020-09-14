@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+        ServerName demo.local
+        DocumentRoot {{ document_root }}/demo/
+        <Directory {{ document_root }}/demo/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Allow from all
+                Require all granted
+        </Directory>
+        CustomLog /var/log/apache2/demo.local-access.log forwarded
+        ErrorLog /var/log/apache2/demo.local-error.log
+        LogLevel warn
+</VirtualHost>

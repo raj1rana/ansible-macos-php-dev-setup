@@ -1,0 +1,110 @@
+- hosts: mac
+
+  vars_files:
+    - vars/env.yml
+  tasks:
+#    Installing services
+    - name: Install httpd
+      homebrew:
+        name: httpd
+        state: present
+        update_homebrew: true
+      tags:
+        - httpd
+    - name: Install Mysql
+      homebrew:
+        name: mysql@{{ mysql_version }}
+        state: present
+        update_homebrew: true
+      tags:
+        - mysql
+    - name: Install PHP
+      homebrew:
+        name: php@{{ php_version }}
+        state: present
+        update_homebrew: true
+      tags:
+        - PHP
+#    create profile file for mac zshrc
+    - name: Create zshrc for user
+      file:
+         path: "/Users/{{ username }}/.zshrc"
+         state: touch
+#    configuring path for our services
+    - name: configure mysql path
+      lineinfile:
+        path: "/Users/{{ username }}/.zshrc"
+        line: 'export PATH="/usr/local/opt/mysql@{{ mysql_version }}/bin:$PATH"'
+    - name: configuring php path
+      lineinfile:
+        path: "/Users/{{ username }}/.zshrc"
+        line: 'export PATH="/usr/local/opt/php@7.3/bin:$PATH"'
+    - name: congiguring sbin for php
+      lineinfile:
+         path: "/Users/{{ username }}/.zshrc"
+         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH'
+    # refreshing the profile
+    - name: refreshing the profile file
+      command: "source ~/.zshrc"
+#    starting all services
+    - name: Starting all services
+      command: brew services start --all
+#    Configuring services
+      #  httpd configurations
+    - name: create direcroty for virtual hosts
+      file:
+        path:  "/usr/local/etc/httpd/extra/sites-available"
+        state: directory
+
+    - name: create document root  for demo  host
+      file:
+        path: "{{ document_root }}/demo"
+        state: directory
+    - name: deleting httpd.conf from  /usr/local/etc/httpd/httpd.conf
+      file:
+         path: "/usr/local/etc/httpd/httpd.conf"
+         state: absent
+
+    - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
+      template:
+        src: "files/httpd.conf.j2"
+        dest: "/usr/local/etc/httpd/httpd.conf"
+        owner: "{{ backup }}"
+        group: admin
+        mode: 644
+
+    - name: creating a phpinfo file in the documentroot
+      template:
+          src: "files/index.php.j2"
+          dest: "{{ document_root }}/index.php"
+    - name: Creating a dummy site
+      template:
+         src: "files/index.html.j2"
+         dest: "{{ document_root }}/demo/index.html"
+
+    - name: Creating a dummy virtual_host
+      template:
+        src: "files/dummy.conf.j2"
+        dest: "/usr/local/etc/httpd/extra/sites-available/demo.local.conf"
+    - name: Editing hosts file for localdomain
+      become: true
+      lineinfile:
+         path: "/etc/hosts"
+         line: "127.0.0.1 demo.local"
+
+    # configuring mysql to use
+
+    - name: Sets the root password
+      mysql_user:
+            name: root
+            password: "{{ mysql_password }}"
+            login_unix_socket: /tmp/mysql.sock
+
+#    restarting all services
+    - name: Restarting all services
+      command: "brew services restart --all"
+#    restarting apache
+    - name: Restarting HTTPD
+      command: "apachectl -k restart"
+
+
