@@ -57,6 +57,16 @@ all:
 
     ungrouped: { }
 ```
-### Thanks
-
+### Go to target system 
+run these commands 
+```sh
+brew services start --all
+apachectl -k start
+```
+### Initial mysql password is none please set it by 
+```sh 
+mysql -u root -p
+alter user 'root'@'localhost identified by '<your password';
+flush privileges;
+```
 

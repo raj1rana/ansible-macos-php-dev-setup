@@ -42,13 +42,15 @@
     - name: congiguring sbin for php
       lineinfile:
          path: "/Users/{{ username }}/.zshrc"
-         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH'
-    # refreshing the profile
-    - name: refreshing the profile file
-      command: "source ~/.zshrc"
-#    starting all services
-    - name: Starting all services
-      command: brew services start --all
+         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH"'
+
+    - name: provsioning script to restart and start the services
+      copy:
+        src: "services.sh"
+        dest: "/Users/{{ username }}/"
+        mode: 0777
+    - name: running the script
+      command: sh /Users/{{ username }}/services.sh
 #    Configuring services
       #  httpd configurations
     - name: create direcroty for virtual hosts
@@ -69,7 +71,7 @@
       template:
         src: "files/httpd.conf.j2"
         dest: "/usr/local/etc/httpd/httpd.conf"
-        owner: "{{ backup }}"
+        owner: "{{ username }}"
         group: admin
         mode: 644
 
@@ -92,19 +94,8 @@
          path: "/etc/hosts"
          line: "127.0.0.1 demo.local"
 
-    # configuring mysql to use
 
-    - name: Sets the root password
-      mysql_user:
-            name: root
-            password: "{{ mysql_password }}"
-            login_unix_socket: /tmp/mysql.sock
 
-#    restarting all services
-    - name: Restarting all services
-      command: "brew services restart --all"
-#    restarting apache
-    - name: Restarting HTTPD
-      command: "apachectl -k restart"
+
 
 
