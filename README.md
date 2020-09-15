@@ -57,6 +57,13 @@ all:
 
     ungrouped: { }
 ```
+
+### Run ansible
+```sh 
+ansible-playbook -v playbook.yml
+```
+
+
 ### Go to target system 
 run these commands 
 ```sh
