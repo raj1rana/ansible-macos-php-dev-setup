@@ -1,5 +1,12 @@
 # Ansible mac setup
 
+### Install brew on target system 
+```sh 
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+
+
 ### requirements
 1. python 3.X +
 2. Ansible
