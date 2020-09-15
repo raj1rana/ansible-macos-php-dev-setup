@@ -5,7 +5,7 @@
 2. Ansible
 
 
-### usges
+### usages
 ```sh
 $ git clone https://git.ithands.com/robert.rajendra/ansible-mac-os-setup.git
 $ cd ansible-mac-os-setup
