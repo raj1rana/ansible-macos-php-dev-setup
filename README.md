@@ -3,7 +3,7 @@
 ### requirements
 1. python 3.X +
 2. Ansible
-
+3. sshpass
 
 ### usages
 ```sh
