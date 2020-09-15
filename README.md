@@ -30,12 +30,7 @@ username:
 # group of the user, Please check which group in older MAC os it is "admin"
 group:
 
-# mysql variables
-# always be root
-mysql_user: root
-# what you want to be the MYSQL password,
-mysql_password:
-```
+
 ### hosts.yml
 ```sh
 # This file is the inventory file this file contains the the information about hosts
