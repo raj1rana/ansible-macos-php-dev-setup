@@ -31,6 +31,7 @@ username:
 group:
 
 
+```
 ### hosts.yml
 ```sh
 # This file is the inventory file this file contains the the information about hosts
