@@ -6,7 +6,7 @@ all:
         # this is an ansible host you can create more hosts
         mac:
           ansible_connection: ssh
-          # hostname of the host mechine
+          # IP of the host machine
           ansible_host:
           # ssh_password
           ansible_ssh_pass:
