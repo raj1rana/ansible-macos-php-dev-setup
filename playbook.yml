@@ -25,6 +25,21 @@
         update_homebrew: true
       tags:
         - PHP
+    - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
+        template:
+          src: "files/httpd.conf.j2"
+          dest: "/usr/local/etc/httpd/httpd.conf"
+    - name: change permission of the log file
+      become: true
+      file:
+        path: "/var/log/apache2/error_log"
+        mode: 0777
+    - name: change permission of the log file
+        become: true
+        file:
+          path: "/var/log/apache2/access_log"
+          mode: 0777
+
 #    create profile file for mac zshrc
     - name: Create zshrc for user
       file:
@@ -67,13 +82,8 @@
          path: "/usr/local/etc/httpd/httpd.conf"
          state: absent
 
-    - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
-      template:
-        src: "files/httpd.conf.j2"
-        dest: "/usr/local/etc/httpd/httpd.conf"
-        owner: "{{ username }}"
-        group: admin
-        mode: 644
+
+
 
     - name: creating a phpinfo file in the documentroot
       template:
