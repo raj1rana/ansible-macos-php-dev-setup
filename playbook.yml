@@ -26,9 +26,9 @@
       tags:
         - PHP
     - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
-        template:
-          src: "files/httpd.conf.j2"
-          dest: "/usr/local/etc/httpd/httpd.conf"
+      template:
+         src: "files/httpd.conf.j2"
+         dest: "/usr/local/etc/httpd/httpd.conf"
     - name: change permission of the log file
       become: true
       file:
