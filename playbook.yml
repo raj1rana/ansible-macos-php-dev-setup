@@ -25,6 +25,10 @@
         update_homebrew: true
       tags:
         - PHP
+    - name: deleting httpd.conf from  /usr/local/etc/httpd/httpd.conf
+        file:
+          path: "/usr/local/etc/httpd/httpd.conf"
+          state: absent
     - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
       template:
         src: "files/httpd.conf.j2"
@@ -77,10 +81,7 @@
       file:
         path: "{{ document_root }}/demo"
         state: directory
-    - name: deleting httpd.conf from  /usr/local/etc/httpd/httpd.conf
-      file:
-        path: "/usr/local/etc/httpd/httpd.conf"
-        state: absent
+
 
 
 
