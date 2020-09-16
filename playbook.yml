@@ -3,7 +3,7 @@
   vars_files:
     - vars/env.yml
   tasks:
-#    Installing services
+    #    Installing services
     - name: Install httpd
       homebrew:
         name: httpd
@@ -27,25 +27,25 @@
         - PHP
     - name: Adding our httpd.conf to /usr/local/etc/httpd/httpd.conf
       template:
-         src: "files/httpd.conf.j2"
-         dest: "/usr/local/etc/httpd/httpd.conf"
+        src: "files/httpd.conf.j2"
+        dest: "/usr/local/etc/httpd/httpd.conf"
     - name: change permission of the log file
-      become: true
+      become: yes
       file:
         path: "/var/log/apache2/error_log"
         mode: 0777
     - name: change permission of the log file
-        become: true
-        file:
+      become: true
+      file:
           path: "/var/log/apache2/access_log"
           mode: 0777
 
-#    create profile file for mac zshrc
+    #    create profile file for mac zshrc
     - name: Create zshrc for user
       file:
-         path: "/Users/{{ username }}/.zshrc"
-         state: touch
-#    configuring path for our services
+        path: "/Users/{{ username }}/.zshrc"
+        state: touch
+    #    configuring path for our services
     - name: configure mysql path
       lineinfile:
         path: "/Users/{{ username }}/.zshrc"
@@ -56,8 +56,8 @@
         line: 'export PATH="/usr/local/opt/php@7.3/bin:$PATH"'
     - name: congiguring sbin for php
       lineinfile:
-         path: "/Users/{{ username }}/.zshrc"
-         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH"'
+        path: "/Users/{{ username }}/.zshrc"
+        line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH"'
 
     - name: provsioning script to restart and start the services
       copy:
@@ -66,11 +66,11 @@
         mode: 0777
     - name: running the script
       command: sh /Users/{{ username }}/services.sh
-#    Configuring services
+      #    Configuring services
       #  httpd configurations
     - name: create direcroty for virtual hosts
       file:
-        path:  "/usr/local/etc/httpd/extra/sites-available"
+        path: "/usr/local/etc/httpd/extra/sites-available"
         state: directory
 
     - name: create document root  for demo  host
@@ -79,20 +79,20 @@
         state: directory
     - name: deleting httpd.conf from  /usr/local/etc/httpd/httpd.conf
       file:
-         path: "/usr/local/etc/httpd/httpd.conf"
-         state: absent
+        path: "/usr/local/etc/httpd/httpd.conf"
+        state: absent
 
 
 
 
     - name: creating a phpinfo file in the documentroot
       template:
-          src: "files/index.php.j2"
-          dest: "{{ document_root }}/index.php"
+        src: "files/index.php.j2"
+        dest: "{{ document_root }}/index.php"
     - name: Creating a dummy site
       template:
-         src: "files/index.html.j2"
-         dest: "{{ document_root }}/demo/index.html"
+        src: "files/index.html.j2"
+        dest: "{{ document_root }}/demo/index.html"
 
     - name: Creating a dummy virtual_host
       template:
@@ -101,8 +101,8 @@
     - name: Editing hosts file for localdomain
       become: true
       lineinfile:
-         path: "/etc/hosts"
-         line: "127.0.0.1 demo.local"
+        path: "/etc/hosts"
+        line: "127.0.0.1 demo.local"
 
 
 
