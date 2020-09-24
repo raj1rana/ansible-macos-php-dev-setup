@@ -80,3 +80,6 @@ alter user 'root'@'localhost identified by '<your password';
 flush privileges;
 ```
 
+### NOTE 
+
+for coloured comments install better comnents for vscode from https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
