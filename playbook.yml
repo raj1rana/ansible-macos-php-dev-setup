@@ -121,6 +121,7 @@
         state: directory
     #? Create document root 
     - name: create document root  for demo  host
+      
       file:
         path: "{{ document_root }}/demo"
         state: directory
