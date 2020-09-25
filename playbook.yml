@@ -2,6 +2,7 @@
 
   roles: 
     - mac.homebrew
+    - nvm
 
   vars_files:
     - vars/env.yml
@@ -14,8 +15,16 @@
         - php@7.2
         - php@7.3
         - php@7.4
-        - nvm
-
+    # We're installing stable Node.js version by default
+    nvm_default_node_version: stable
+    nvm_node_versions:
+        - "{{ nvm_default_node_version }}"    
+    # Initialize shell profile scripts
+    nvm_shell_init: yes
+    # Define the shell profile scripts to initialiaze
+    nvm_shell_profile_scripts:
+        - .bashrc
+        - .zshrc
     cask_packages:  # other desktop apps 
         - visual-studio-code	
         - sequel-pro
@@ -88,7 +97,7 @@
         path: "/Users/{{ username }}/.zshrc"
         line: 'export PATH="/usr/local/opt/php@7.3/bin:$PATH"'
 
-    - name: congiguring sbin for php
+    - name: congiguring sbin for php0.
       lineinfile:
         path: "/Users/{{ username }}/.zshrc"
         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH"'

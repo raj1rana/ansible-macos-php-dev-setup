@@ -1,0 +1,23 @@
+---
+# defaults file for markosamuli.nvm
+
+# We're installing Node.js LTS version by default
+nvm_default_node_version: "lts/*"
+nvm_node_versions:
+  - "{{ nvm_default_node_version }}"
+
+# Configure shell rc files
+nvm_shell_init: true
+
+# Global NPM packages to install
+nvm_npm_global_packages: []
+
+# Temp path
+nvm_tmp_path: /tmp/install_nvm
+
+# NVM version to install
+nvm_version: "v0.35.3"
+
+# sha256sum install.sh
+# yamllint disable-line rule:line-length
+nvm_install_checksum: "sha256:f068e17dacb88f73302790cc076956c7a0d459ce9b01df842ff3e75744f9e2fe"
