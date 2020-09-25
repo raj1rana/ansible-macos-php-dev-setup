@@ -1,12 +1,5 @@
 # Ansible mac setup
 
-### Install brew on target system 
-```sh 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-```
-
-
-
 ### requirements
 1. python 3.X +
 2. Ansible
@@ -26,9 +19,6 @@ $ cp vars/env.example.yml vars/env.yml
 # versions
 # eg:- 5.7, 5.8
 mysql_version:
-# eg:- 7.1, 7.2, 7.3, 7.4
-php_version:
-
 # http variables
 # document root for the app (must be your project folder)
 document_root:
