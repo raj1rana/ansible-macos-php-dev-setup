@@ -1,46 +1,42 @@
 - hosts: mac
 
+  roles: 
+    - mac.homebrew
+    - nvm
+
   vars_files:
     - vars/env.yml
-  tasks:
-    #! Installing services
-    #? Install apache
-    - name: Install httpd
-      homebrew:
-        name: httpd
-        state: present
-        update_homebrew: true
-      tags:
+  vars: 
+    homebrew_installed_packages: 
+        - openldap
+        - libiconv
+        - mysql@{{ mysql_version }}
         - httpd
+        - php@7.2
+        - php@7.3
+        - php@7.4
+    # We're installing stable Node.js version by default
+    nvm_default_node_version: stable
+    nvm_node_versions:
+        - "{{ nvm_default_node_version }}"    
+    # Initialize shell profile scripts
+    nvm_shell_init: yes
+    # Define the shell profile scripts to initialiaze
+    nvm_shell_profile_scripts:
+        - .bashrc
+        - .zshrc
+    cask_packages:  # other desktop apps 
+        - visual-studio-code	
+        - sequel-pro
+        - google-chrome
+  tasks:
 
-
-    # ? install MYSQL
-    - name: Install Mysql
-      homebrew:
-        name: mysql@{{ mysql_version }}
-        state: present
-        update_homebrew: true
-      tags:
-        - mysql
-
-
-    #? install PHP 
-    - name: Install PHP
-      homebrew:
-        name: php@{{ php_version }}
-        state: present
-        update_homebrew: true
-      tags:
-        - PHP
-
-
-    #? install phpmyadmin 
-    - name: Install phpmyadmin
-      homebrew: 
-        name: phpmyadmin
-        state: present
-        update_homebrew: true
-
+    - name: Install GUI tools 
+      homebrew_cask: 
+            name: '{{ item }}'
+            state: present
+            install_options: 'appdir=/Applications'
+      with_items: '{{ cask_packages }}'
     #? removing the default conf file
     - name: deleting httpd.conf from  /usr/local/etc/httpd/httpd.conf
       file:
@@ -101,7 +97,7 @@
         path: "/Users/{{ username }}/.zshrc"
         line: 'export PATH="/usr/local/opt/php@7.3/bin:$PATH"'
 
-    - name: congiguring sbin for php
+    - name: congiguring sbin for php0.
       lineinfile:
         path: "/Users/{{ username }}/.zshrc"
         line: 'export PATH="/usr/local/opt/php@7.3/sbin:$PATH"'
@@ -121,6 +117,7 @@
         state: directory
     #? Create document root 
     - name: create document root  for demo  host
+
       file:
         path: "{{ document_root }}/demo"
         state: directory
