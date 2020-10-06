@@ -1,7 +1,6 @@
 - hosts: mac
 
-  roles: 
-    - mac.homebrew
+  roles:
     - nvm
 
   vars_files:
@@ -30,6 +29,25 @@
         - sequel-pro
         - google-chrome
   tasks:
+
+    - name: Install Homebrew
+      shell: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      args:
+        creates: /usr/local/bin/brew
+
+    # The homebrew module's "update_homebrew" option seems to update homebrew
+    # for every package which is unnecessarily slow.
+    # Instead we just do it once right here.
+    - name: Update homebrew
+      homebrew:
+        update_homebrew: yes
+
+    - name: Installing homebrew packages
+      homebrew:
+        name: '{{ items }}'
+        state: present
+        update_homebrew: true
+      with_items: '{{ homebrew_installed_packages }}'
 
     - name: Install GUI tools 
       homebrew_cask: 
