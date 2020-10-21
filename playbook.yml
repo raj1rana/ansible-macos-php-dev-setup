@@ -44,7 +44,7 @@
 
     - name: Installing homebrew packages
       homebrew:
-        name: '{{ items }}'
+        name: '{{ item }}'
         state: present
         update_homebrew: true
       with_items: '{{ homebrew_installed_packages }}'
