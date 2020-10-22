@@ -28,6 +28,12 @@
         - visual-studio-code	
         - sequel-pro
         - google-chrome
+  pre_tasks:
+    - name: Install Homebrew
+      shell: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      args:
+          creates: /usr/local/bin/brew
+
   tasks:
 
     - name: Install Homebrew
